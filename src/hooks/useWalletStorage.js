@@ -7,17 +7,6 @@ const LOADING_START = {loading: true};
 const RESET = {wallet: null, loading: false};
 const setWallet = wallet => ({wallet, loading: false});
 
-const verify = async seedPhrase => {
-  try {
-    // Prevent blocking
-    await new Promise(resolve => setTimeout(resolve));
-
-    ethers.Wallet.fromMnemonic(seedPhrase);
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const useWalletStorage = create(set => ({
   wallet: null,
   loading: false,
@@ -43,7 +32,9 @@ export const useWalletStorage = create(set => ({
     try {
       set(LOADING_START);
 
-      await verify(seedPhrase);
+      // Prevent blocking
+      await new Promise(resolve => setTimeout(resolve));
+      ethers.Wallet.fromMnemonic(seedPhrase);
       await Keychain.setGenericPassword(App.KEYCHAIN_USERNAME, seedPhrase);
 
       set(setWallet(seedPhrase));
