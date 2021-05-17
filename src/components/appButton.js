@@ -1,9 +1,14 @@
 import React from 'react';
-import {Button} from 'react-native-magnus';
+import {Button, Skeleton} from 'react-native-magnus';
+
+const SKELETON_HEIGHT = 44;
 
 export const AppButton = ({
+  loading = false,
   outline = false,
   danger = false,
+  marginTop = false,
+  onPress,
   children,
   ...props
 }) => {
@@ -30,8 +35,24 @@ export const AppButton = ({
     {};
 
   return (
-    <Button {...outlineProps} {...dangerProps} {...props}>
-      {children}
-    </Button>
+    <>
+      {loading ? (
+        <Skeleton.Box
+          h={SKELETON_HEIGHT}
+          mt={(marginTop && 'lg') || undefined}
+          {...props}
+        />
+      ) : (
+        <Button
+          block
+          mt={(marginTop && 'lg') || undefined}
+          onPress={onPress}
+          {...outlineProps}
+          {...dangerProps}
+          {...props}>
+          {children}
+        </Button>
+      )}
+    </>
   );
 };

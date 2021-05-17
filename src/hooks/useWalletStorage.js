@@ -1,50 +1,62 @@
 import create from 'zustand';
 import * as Keychain from 'react-native-keychain';
 import {ethers} from '../lib/ethers';
-import {App} from '../config/app';
+import App from '../config/app';
 
 const LOADING_START = {loading: true};
 const RESET = {wallet: null, loading: false};
-const setWallet = wallet => ({wallet, loading: false});
+const setWalletState = wallet => ({wallet, loading: false});
+const createWalletFromSeed = async seedPhrase => {
+  try {
+    // Prevent blocking
+    await new Promise(resolve => setTimeout(resolve));
+    return ethers.Wallet.fromMnemonic(seedPhrase);
+  } catch (error) {
+    throw error;
+  }
+};
 
-export const useWalletStorage = create(set => ({
+export const useWalletStorage = create((set, get) => ({
   wallet: null,
   loading: false,
 
-  getWalletFromKeychain: async () => {
+  createRandomSeedPhrase: () => {
+    return ethers.utils.entropyToMnemonic(ethers.utils.randomBytes(32));
+  },
+
+  getWallet: async () => {
     try {
       set(LOADING_START);
 
-      const wallet = await Keychain.getGenericPassword();
+      const credentials = await Keychain.getGenericPassword();
 
-      if (wallet) {
-        set(setWallet(wallet.password));
+      if (credentials) {
+        const wallet = await createWalletFromSeed(credentials.password);
+        set(setWalletState(wallet));
       } else {
         set(RESET);
       }
     } catch (error) {
-      console.error("Keychain couldn't be accessed!", error);
+      console.error(error);
       set(RESET);
     }
   },
 
-  setWalletInKeychain: async seedPhrase => {
+  setWallet: async seedPhrase => {
     try {
       set(LOADING_START);
 
-      // Prevent blocking
-      await new Promise(resolve => setTimeout(resolve));
-      ethers.Wallet.fromMnemonic(seedPhrase);
+      const wallet = await createWalletFromSeed(seedPhrase);
       await Keychain.setGenericPassword(App.KEYCHAIN_USERNAME, seedPhrase);
 
-      set(setWallet(seedPhrase));
+      set(setWalletState(wallet));
     } catch (error) {
       set(RESET);
       throw error;
     }
   },
 
-  clearWalletInKeychain: async () => {
+  clearWallet: async () => {
     try {
       set(LOADING_START);
 

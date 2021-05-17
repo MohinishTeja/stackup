@@ -2,20 +2,20 @@ import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Div, Text, Input, Icon, Snackbar} from 'react-native-magnus';
 import {AppButton} from '../components';
-import {useWalletStorage} from '../hooks/useWalletStorage';
-import {App} from '../config/app';
+import {useWalletStorage} from '../hooks';
+import App from '../config/app';
 
 export default function ImportHDWalletScreen() {
   const [seedPhrase, setSeedPhrase] = useState('');
-  const {loading, setWalletInKeychain} = useWalletStorage(set => ({
+  const {loading, setWallet} = useWalletStorage(set => ({
     loading: set.loading,
-    setWalletInKeychain: set.setWalletInKeychain,
+    setWallet: set.setWallet,
   }));
   this.snackbarRef = null;
 
   const onContinuePress = async () => {
     try {
-      await setWalletInKeychain(seedPhrase);
+      await setWallet(seedPhrase);
     } catch (error) {
       this.snackbarRef.show(error.message || App.GENERIC_ERROR_MSG, {
         duration: 2000,
@@ -44,7 +44,7 @@ export default function ImportHDWalletScreen() {
           fontSize="xl"
           focusBorderColor="blue700"
         />
-        <AppButton block mt="lg" loading={loading} onPress={onContinuePress}>
+        <AppButton marginTop loading={loading} onPress={onContinuePress}>
           Continue
         </AppButton>
       </Div>

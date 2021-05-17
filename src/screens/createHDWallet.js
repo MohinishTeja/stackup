@@ -3,17 +3,17 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Div, Text, Input, Icon, Snackbar} from 'react-native-magnus';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {AppButton} from '../components';
-import {ethers} from '../lib/ethers';
-import {useWalletStorage} from '../hooks/useWalletStorage';
+import {useWalletStorage} from '../hooks';
 
 export default function CreateHDWalletScreen() {
-  const [seedPhrase] = useState(
-    ethers.utils.entropyToMnemonic(ethers.utils.randomBytes(32)),
+  const {loading, createRandomSeedPhrase, setWallet} = useWalletStorage(
+    set => ({
+      loading: set.loading,
+      createRandomSeedPhrase: set.createRandomSeedPhrase,
+      setWallet: set.setWallet,
+    }),
   );
-  const {loading, setWalletInKeychain} = useWalletStorage(set => ({
-    loading: set.loading,
-    setWalletInKeychain: set.setWalletInKeychain,
-  }));
+  const [seedPhrase] = useState(createRandomSeedPhrase());
   this.snackbarRef = null;
 
   const onCopyPress = () => {
@@ -33,7 +33,7 @@ export default function CreateHDWalletScreen() {
 
   const onContinuePress = async () => {
     try {
-      await setWalletInKeychain(seedPhrase);
+      await setWallet(seedPhrase);
     } catch (error) {
       console.error(error);
     }
@@ -46,15 +46,10 @@ export default function CreateHDWalletScreen() {
           Seed Phrase:
         </Text>
         <Input mt="lg" multiline fontSize="xl" value={seedPhrase} />
-        <AppButton
-          outline
-          block
-          mt="lg"
-          loading={loading}
-          onPress={onCopyPress}>
+        <AppButton outline marginTop loading={loading} onPress={onCopyPress}>
           Copy
         </AppButton>
-        <AppButton block mt="lg" loading={loading} onPress={onContinuePress}>
+        <AppButton marginTop loading={loading} onPress={onContinuePress}>
           Continue
         </AppButton>
       </Div>

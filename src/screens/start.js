@@ -1,9 +1,9 @@
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Div, Text, Tag} from 'react-native-magnus';
-import {useWalletStorage} from '../hooks/useWalletStorage';
+import {useWalletStorage} from '../hooks';
 import {AppButton} from '../components';
-import {Router} from '../config/router';
+import Router from '../config/router';
 
 export default function StartScreen({navigation}) {
   const {loading} = useWalletStorage(set => ({loading: set.loading}));
@@ -23,16 +23,14 @@ export default function StartScreen({navigation}) {
           A friendly DeFi app for the Polygon Network
         </Text>
         <AppButton
-          block
           mt="3xl"
           loading={loading}
           onPress={() => navigation.navigate(Router.IMPORT_HD_WALLET)}>
           Import Wallet
         </AppButton>
         <AppButton
-          block
           outline
-          mt="lg"
+          marginTop
           loading={loading}
           onPress={() => navigation.navigate(Router.CREATE_HD_WALLET)}>
           Create Wallet

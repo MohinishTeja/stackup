@@ -5,23 +5,24 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {ThemeProvider} from 'react-native-magnus';
-import {Router} from './src/config/router';
+import Router from './src/config/router';
 import StartScreen from './src/screens/start';
+import SettingsScreen from './src/screens/settings';
 import ImportHDWalletScreen from './src/screens/importHDWallet';
 import CreateHDWalletScreen from './src/screens/createHDWallet';
-import MainScreen from './src/screens/mainScreen';
-import {useWalletStorage} from './src/hooks/useWalletStorage';
+import MainScreen from './src/screens/main';
+import {useWalletStorage} from './src/hooks';
 
 const Stack = createStackNavigator();
 
 export default function Main() {
-  const {wallet, getWalletFromKeychain} = useWalletStorage(set => ({
+  const {wallet, getWallet} = useWalletStorage(set => ({
     wallet: set.wallet,
-    getWalletFromKeychain: set.getWalletFromKeychain,
+    getWallet: set.getWallet,
   }));
 
   useEffect(async () => {
-    await getWalletFromKeychain();
+    await getWallet();
   }, []);
 
   return (
@@ -34,7 +35,12 @@ export default function Main() {
                 <Stack.Screen
                   name={Router.MAIN}
                   component={MainScreen}
-                  options={{headerShown: false}}
+                  options={{headerShown: false, title: 'Home'}}
+                />
+                <Stack.Screen
+                  name={Router.SETTINGS}
+                  component={SettingsScreen}
+                  options={{title: 'Settings'}}
                 />
               </>
             ) : (
