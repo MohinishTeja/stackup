@@ -2,6 +2,9 @@ export default Network = {
   MATIC: {
     LOGO: require('../assets/matic-logo.png'),
     SYMBOL: 'MATIC',
+    EXPLORER_URL: `https://explorer-${
+      __DEV__ ? 'mumbai' : 'mainnet'
+    }.maticvigil.com/address`,
     RPC_URL: __DEV__
       ? 'https://rpc-mumbai.maticvigil.com'
       : 'https://rpc-mainnet.maticvigil.com/',
