@@ -3,17 +3,77 @@ import React, {useEffect} from 'react';
 import {AppRegistry} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {ThemeProvider} from 'react-native-magnus';
 import Router from './src/config/router';
+import Network from './src/config/network';
 import StartScreen from './src/screens/start';
 import SettingsScreen from './src/screens/settings';
 import ImportHDWalletScreen from './src/screens/importHDWallet';
 import CreateHDWalletScreen from './src/screens/createHDWallet';
 import MainScreen from './src/screens/main';
-import {useWalletStorage} from './src/hooks';
+import AccountScreen from './src/screens/account';
+import {useWalletStorage, useInit} from './src/hooks';
+import {AppTabBar} from './src/components';
 
 const Stack = createStackNavigator();
+const Tab = createMaterialTopTabNavigator();
+
+const MainTabs = () => {
+  const {wallet} = useWalletStorage(set => ({
+    wallet: set.wallet,
+  }));
+  const init = useInit();
+
+  useEffect(() => {
+    if (wallet) {
+      init();
+    }
+  }, [wallet]);
+
+  return (
+    <SafeAreaView style={{flex: 1}}>
+      <Tab.Navigator lazy tabBar={props => <AppTabBar {...props} />}>
+        <Tab.Screen
+          name={Router.ACTIVITY}
+          component={MainScreen}
+          options={{title: 'Activity'}}
+        />
+        <Tab.Screen
+          name={Router.ACCOUNT}
+          component={AccountScreen}
+          options={{title: 'Account'}}
+        />
+        <Tab.Screen
+          name={Router.PAYMENTS}
+          component={AccountScreen}
+          options={{title: 'Payments'}}
+        />
+        <Tab.Screen
+          name={Router.EARN}
+          component={AccountScreen}
+          options={{title: 'Earn'}}
+        />
+        <Tab.Screen
+          name={Router.LOAN}
+          component={AccountScreen}
+          options={{title: 'Loan'}}
+        />
+        <Tab.Screen
+          name={Router.SWAP}
+          component={AccountScreen}
+          options={{title: 'Swap'}}
+        />
+        <Tab.Screen
+          name={Router.SETTINGS}
+          component={SettingsScreen}
+          options={{title: 'Settings'}}
+        />
+      </Tab.Navigator>
+    </SafeAreaView>
+  );
+};
 
 export default function Main() {
   const {wallet, getWallet} = useWalletStorage(set => ({
@@ -34,13 +94,8 @@ export default function Main() {
               <>
                 <Stack.Screen
                   name={Router.MAIN}
-                  component={MainScreen}
+                  component={MainTabs}
                   options={{headerShown: false, title: 'Home'}}
-                />
-                <Stack.Screen
-                  name={Router.SETTINGS}
-                  component={SettingsScreen}
-                  options={{title: 'Settings'}}
                 />
               </>
             ) : (

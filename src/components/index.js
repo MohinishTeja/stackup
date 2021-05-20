@@ -1,3 +1,4 @@
+export * from './appTabBar';
 export * from './appButton';
 export * from './accountBalance';
 export * from './accountExplorer';

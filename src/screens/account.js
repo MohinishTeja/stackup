@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {Div, Overlay, Input, Icon, Snackbar} from 'react-native-magnus';
 import {useWalletStorage, useAccount} from '../hooks';
 import {SectionContainer, AppButton} from '../components';
 
-export default function SettingsPage({navigation}) {
+export default function AccountScreen({navigation}) {
   const [showSeedPhrase, setShowSeedPhrase] = useState(false);
   const {wallet, walletLoading, clearWallet} = useWalletStorage(set => ({
     wallet: set.wallet,

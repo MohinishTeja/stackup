@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {ScrollView, RefreshControl} from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {Div, Icon, Snackbar} from 'react-native-magnus';
 import {
   AccountBalance,
@@ -11,8 +10,7 @@ import {
   AccountDeposit,
   SectionContainer,
 } from '../components';
-import {useWalletStorage, useAccount} from '../hooks';
-import Network from '../config/network';
+import {useWalletStorage, useAccount, useInit} from '../hooks';
 import Router from '../config/router';
 
 export default function MainScreen({navigation}) {
@@ -21,35 +19,10 @@ export default function MainScreen({navigation}) {
     wallet: set.wallet,
     walletLoading: set.loading,
   }));
-  const {maticLoading, fetchBalance, fetchERC20Balance} = useAccount(set => ({
-    maticLoading: set.loading,
-    fetchBalance: set.fetchBalance,
-    fetchERC20Balance: set.fetchERC20Balance,
-  }));
+  const {maticLoading} = useAccount(set => ({maticLoading: set.loading}));
+  const init = useInit();
   const isLoading = walletLoading || maticLoading;
   this.snackbarRef = null;
-
-  const init = async () => {
-    return Promise.all([
-      fetchBalance(wallet),
-      fetchERC20Balance(
-        wallet,
-        Network.MATIC.ERC20_TOKENS.DAI.SYMBOL,
-        Network.MATIC.ERC20_TOKENS.DAI.ADDRESS,
-      ),
-      fetchERC20Balance(
-        wallet,
-        Network.MATIC.ERC20_TOKENS.USDC.SYMBOL,
-        Network.MATIC.ERC20_TOKENS.USDC.ADDRESS,
-      ),
-    ]);
-  };
-
-  useEffect(() => {
-    if (wallet) {
-      init();
-    }
-  }, [wallet]);
 
   const onRefresh = async () => {
     try {
@@ -79,15 +52,15 @@ export default function MainScreen({navigation}) {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         <Div p="xl">
-          <AccountBalance mt="2xl" />
+          <AccountBalance />
 
-          <AccountAddress mt="lg" onPress={onCopyPress} />
+          <AccountAddress mt="xl" onPress={onCopyPress} />
 
           <SectionContainer mt="xl" blueBorder title="💸 Account">
             <AccountExplorer loading={isLoading} />
@@ -126,6 +99,6 @@ export default function MainScreen({navigation}) {
           color="white"
         />
       </Div>
-    </SafeAreaView>
+    </>
   );
 }
