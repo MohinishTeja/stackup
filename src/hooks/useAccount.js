@@ -28,8 +28,8 @@ const LOADING_END = {loading: false};
 const setBalanceState = balance => ({balance, ...LOADING_END});
 const setERC20TokenState = (erc20Tokens, symbol, balance) => ({
   erc20Tokens: orderBy(
-    uniqBy([...erc20Tokens, {symbol, balance}], 'name'),
-    'name',
+    uniqBy([...erc20Tokens, {symbol, balance}], 'symbol'),
+    'symbol',
   ),
   ...LOADING_END,
 });

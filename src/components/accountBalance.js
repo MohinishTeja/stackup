@@ -1,23 +1,22 @@
 import React from 'react';
-import {Dimensions} from 'react-native';
+import {useWindowDimensions} from 'react-native';
 import {Div, Text, Image, Skeleton} from 'react-native-magnus';
 import Carousel from 'react-native-snap-carousel';
 import {useWalletStorage, useAccount} from '../hooks';
 import {ethers} from '../lib/ethers';
 import Network from '../config/network';
 
-const {width: viewportWidth} = Dimensions.get('window');
-const wp = percentage => {
-  const value = (percentage * viewportWidth) / 100;
-  return Math.round(value);
-};
-
-const sliderWidth = viewportWidth;
-const sliderHeight = 128;
-const itemWidth = wp(75) + wp(2) * 2;
-const logoHeight = 48;
-
 export const AccountBalance = props => {
+  const {width: viewportWidth} = useWindowDimensions();
+  const wp = percentage => {
+    const value = (percentage * viewportWidth) / 100;
+    return Math.round(value);
+  };
+  const sliderWidth = viewportWidth;
+  const sliderHeight = 128;
+  const itemWidth = wp(75) + wp(2) * 2;
+  const logoHeight = 48;
+
   const {walletLoading} = useWalletStorage(set => ({
     walletLoading: set.loading,
   }));
@@ -40,7 +39,7 @@ export const AccountBalance = props => {
           h={logoHeight}
           w={logoHeight}
           source={
-            (index === 0 && Network.MATIC.LOGO) ||
+            (index === erc20Tokens.length && Network.MATIC.LOGO) ||
             Network.MATIC.ERC20_TOKENS[item.symbol].LOGO
           }
         />
@@ -75,7 +74,7 @@ export const AccountBalance = props => {
         </Div>
       ) : (
         <Carousel
-          data={[{symbol: Network.MATIC.SYMBOL, balance}, ...erc20Tokens]}
+          data={[...erc20Tokens, {symbol: Network.MATIC.SYMBOL, balance}]}
           renderItem={renderItem}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}

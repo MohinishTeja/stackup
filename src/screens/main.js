@@ -8,6 +8,7 @@ import {
   AppButton,
   AccountExplorer,
   AccountAddress,
+  AccountDeposit,
   SectionContainer,
 } from '../components';
 import {useWalletStorage, useAccount} from '../hooks';
@@ -35,6 +36,11 @@ export default function MainScreen({navigation}) {
         wallet,
         Network.MATIC.ERC20_TOKENS.DAI.SYMBOL,
         Network.MATIC.ERC20_TOKENS.DAI.ADDRESS,
+      ),
+      fetchERC20Balance(
+        wallet,
+        Network.MATIC.ERC20_TOKENS.USDC.SYMBOL,
+        Network.MATIC.ERC20_TOKENS.USDC.ADDRESS,
       ),
     ]);
   };
@@ -85,9 +91,7 @@ export default function MainScreen({navigation}) {
 
           <SectionContainer mt="xl" blueBorder title="💸 Account">
             <AccountExplorer loading={isLoading} />
-            <AppButton outline marginTop block loading={isLoading}>
-              Deposit
-            </AppButton>
+            <AccountDeposit marginTop loading={isLoading} />
             <AppButton outline marginTop block loading={isLoading}>
               Pay
             </AppButton>
@@ -95,7 +99,10 @@ export default function MainScreen({navigation}) {
 
           <SectionContainer mt="xl" blueBorder title="⚡️ Protocols">
             <AppButton outline loading={isLoading}>
-              Loans
+              Earn
+            </AppButton>
+            <AppButton outline marginTop loading={isLoading}>
+              Loan
             </AppButton>
             <AppButton outline marginTop loading={isLoading}>
               Exchange

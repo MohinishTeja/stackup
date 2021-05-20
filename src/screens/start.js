@@ -1,4 +1,5 @@
 import React from 'react';
+import {useWindowDimensions} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Div, Text, Tag} from 'react-native-magnus';
 import {useWalletStorage} from '../hooks';
@@ -7,11 +8,12 @@ import Router from '../config/router';
 
 export default function StartScreen({navigation}) {
   const {loading} = useWalletStorage(set => ({loading: set.loading}));
+  const {height} = useWindowDimensions();
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Div flex={1} alignItems="center" justifyContent="center" px="xl">
-        <Div row>
+      <Div flex={1} top={height * 0.25} px="xl">
+        <Div row alignItems="center" justifyContent="center">
           <Text fontSize="6xl" fontWeight="bold">
             StackUp
           </Text>
