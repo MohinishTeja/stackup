@@ -2,7 +2,7 @@ import React from 'react';
 import {Pressable} from 'react-native';
 import {Div, Text, Skeleton, Icon} from 'react-native-magnus';
 import {useWalletStorage} from '../hooks';
-import {startAndEnd} from '../utils/addressHelpers';
+import {startAndEnd} from '../utils/formatHelpers';
 
 export const AccountAddress = props => {
   const {wallet, walletLoading} = useWalletStorage(set => ({

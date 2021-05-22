@@ -5,6 +5,7 @@ import Carousel from 'react-native-snap-carousel';
 import {useWalletStorage, useAccount} from '../hooks';
 import {ethers} from '../lib/ethers';
 import Network from '../config/network';
+import {numberWithCommas} from '../utils/formatHelpers';
 
 export const AccountBalance = props => {
   const {width: viewportWidth} = useWindowDimensions();
@@ -43,7 +44,7 @@ export const AccountBalance = props => {
         <Image mt="lg" h={logoHeight} w={logoHeight} source={source} />
         <Div row my="lg" alignItems="baseline" justifyContent="center">
           <Text fontWeight="bold" fontSize="6xl">
-            {ethers.utils.formatUnits(item.balance, units)}
+            {numberWithCommas(ethers.utils.formatUnits(item.balance, units))}
           </Text>
           <Text fontWeight="bold" fontSize="lg">
             {' '}

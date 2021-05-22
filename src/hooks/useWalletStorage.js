@@ -16,7 +16,7 @@ const createWalletFromSeed = async seedPhrase => {
   }
 };
 
-export const useWalletStorage = create((set, get) => ({
+export const useWalletStorage = create(set => ({
   wallet: null,
   loading: false,
 
