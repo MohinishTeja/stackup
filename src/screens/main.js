@@ -1,28 +1,16 @@
-import React, {useState} from 'react';
-import {ScrollView, RefreshControl} from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
-import {Div, Icon, Snackbar} from 'react-native-magnus';
-import {
-  AccountBalance,
-  AppButton,
-  AccountExplorer,
-  AccountAddress,
-  AccountDeposit,
-  SectionContainer,
-} from '../components';
-import {useWalletStorage, useAccount, useInit} from '../hooks';
-import Router from '../config/router';
+import React, {useState, useEffect} from 'react';
+import {ScrollView, RefreshControl, LogBox} from 'react-native';
+import {Div} from 'react-native-magnus';
+import {AccountBalance, AccountExplorer, AccountActivity} from '../components';
+import {useInit} from '../hooks';
 
 export default function MainScreen({navigation}) {
   const [refreshing, setRefreshing] = useState(false);
-  const {wallet, walletLoading} = useWalletStorage(set => ({
-    wallet: set.wallet,
-    walletLoading: set.loading,
-  }));
-  const {maticLoading} = useAccount(set => ({maticLoading: set.loading}));
   const init = useInit();
-  const isLoading = walletLoading || maticLoading;
-  this.snackbarRef = null;
+
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, []);
 
   const onRefresh = async () => {
     try {
@@ -36,69 +24,19 @@ export default function MainScreen({navigation}) {
     }
   };
 
-  const onCopyPress = () => {
-    Clipboard.setString(wallet?.address);
-    this.snackbarRef.show('Address copied to clipboard', {
-      duration: 2000,
-      suffix: (
-        <Icon
-          name="checkcircle"
-          color="white"
-          fontSize="md"
-          fontFamily="AntDesign"
-        />
-      ),
-    });
-  };
-
   return (
     <>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        <Div p="xl">
+        <Div px="lg" pt="xl" pb="lg">
           <AccountBalance />
 
-          <AccountAddress mt="xl" onPress={onCopyPress} />
-
-          <SectionContainer mt="xl" blueBorder title="💸 Account">
-            <AccountExplorer loading={isLoading} />
-            <AccountDeposit marginTop loading={isLoading} />
-            <AppButton outline marginTop block loading={isLoading}>
-              Pay
-            </AppButton>
-          </SectionContainer>
-
-          <SectionContainer mt="xl" blueBorder title="⚡️ Protocols">
-            <AppButton outline loading={isLoading}>
-              Earn
-            </AppButton>
-            <AppButton outline marginTop loading={isLoading}>
-              Loan
-            </AppButton>
-            <AppButton outline marginTop loading={isLoading}>
-              Exchange
-            </AppButton>
-          </SectionContainer>
-
-          <SectionContainer mt="xl" title="📱 App">
-            <AppButton
-              outline
-              loading={isLoading}
-              onPress={() => navigation.navigate(Router.SETTINGS)}>
-              Settings
-            </AppButton>
-          </SectionContainer>
+          <AccountExplorer mt="xl" />
         </Div>
+        <AccountActivity />
       </ScrollView>
-      <Div>
-        <Snackbar
-          ref={ref => (this.snackbarRef = ref)}
-          bg="green700"
-          color="white"
-        />
-      </Div>
     </>
   );
 }

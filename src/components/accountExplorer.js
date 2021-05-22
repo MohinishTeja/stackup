@@ -1,45 +1,48 @@
-import React, {useState} from 'react';
-import {Linking} from 'react-native';
+import React from 'react';
+import {Pressable, Linking} from 'react-native';
 import {InAppBrowser} from 'react-native-inappbrowser-reborn';
-import {Icon} from 'react-native-magnus';
-import {AppButton} from '.';
+import {Div, Text, Skeleton, Icon} from 'react-native-magnus';
 import {useWalletStorage} from '../hooks';
 import Network from '../config/network';
 
 export const AccountExplorer = props => {
-  const [loading, setLoading] = useState(false);
-  const {wallet} = useWalletStorage(set => ({wallet: set.wallet}));
+  const {wallet, walletLoading} = useWalletStorage(set => ({
+    wallet: set.wallet,
+    walletLoading: set.loading,
+  }));
 
   const onPress = async () => {
     try {
-      setLoading(true);
-
-      const url = `${Network.MATIC.EXPLORER_URL}/${wallet.address}`;
+      const url = `${Network.MATIC.EXPLORER_URL}/address/${wallet.address}`;
       if (await InAppBrowser.isAvailable()) {
         await InAppBrowser.open(url);
       } else Linking.openURL(url);
     } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
-    <AppButton
-      outline
-      loading={loading}
-      suffix={
-        <Icon
-          name="arrowright"
-          color="blue500"
-          fontSize="md"
-          fontFamily="AntDesign"
-        />
-      }
-      onPress={onPress}
-      {...props}>
-      Activity
-    </AppButton>
+    <>
+      {walletLoading ? (
+        <Skeleton.Box h={32} {...props} />
+      ) : (
+        <Pressable onPress={onPress}>
+          <Div
+            row
+            p="md"
+            borderWidth={1}
+            borderColor="blue500"
+            bg="blue100"
+            rounded="md"
+            alignItems="center"
+            justifyContent="space-between"
+            {...props}>
+            <Text fontWeight="bold">🔎 Open explorer</Text>
+            <Icon name="open-in-new" fontFamily="MaterialIcons" color="black" />
+          </Div>
+        </Pressable>
+      )}
+    </>
   );
 };

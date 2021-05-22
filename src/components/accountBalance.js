@@ -27,6 +27,12 @@ export const AccountBalance = props => {
   }));
 
   const renderItem = ({item, index}) => {
+    const source =
+      (index === erc20Tokens.length && Network.MATIC.LOGO) ||
+      Network.MATIC.ERC20_TOKENS[item.symbol].LOGO;
+    const units =
+      (index === erc20Tokens.length && Network.MATIC.UNITS) ||
+      Network.MATIC.ERC20_TOKENS[item.symbol].UNITS;
     return (
       <Div
         rounded="md"
@@ -34,18 +40,10 @@ export const AccountBalance = props => {
         bg="white"
         alignItems="center"
         justifyContent="center">
-        <Image
-          mt="lg"
-          h={logoHeight}
-          w={logoHeight}
-          source={
-            (index === erc20Tokens.length && Network.MATIC.LOGO) ||
-            Network.MATIC.ERC20_TOKENS[item.symbol].LOGO
-          }
-        />
+        <Image mt="lg" h={logoHeight} w={logoHeight} source={source} />
         <Div row my="lg" alignItems="baseline" justifyContent="center">
           <Text fontWeight="bold" fontSize="6xl">
-            {ethers.utils.formatEther(item.balance.toString())}
+            {ethers.utils.formatUnits(item.balance, units)}
           </Text>
           <Text fontWeight="bold" fontSize="lg">
             {' '}

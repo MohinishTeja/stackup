@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
 import {Linking} from 'react-native';
 import {InAppBrowser} from 'react-native-inappbrowser-reborn';
-import {Icon} from 'react-native-magnus';
 import queryString from 'query-string';
 import {AppButton} from '.';
 import {useWalletStorage} from '../hooks';
 import App from '../config/app';
 import Network from '../config/network';
 
-export const AccountDeposit = props => {
+export const RampNetworkDeposit = props => {
   const [loading, setLoading] = useState(false);
   const {wallet} = useWalletStorage(set => ({wallet: set.wallet}));
 
@@ -42,20 +41,8 @@ export const AccountDeposit = props => {
   };
 
   return (
-    <AppButton
-      outline
-      loading={loading}
-      suffix={
-        <Icon
-          name="arrowright"
-          color="blue500"
-          fontSize="md"
-          fontFamily="AntDesign"
-        />
-      }
-      onPress={onPress}
-      {...props}>
-      Deposit
+    <AppButton outline loading={loading} onPress={onPress} {...props}>
+      Ramp Network
     </AppButton>
   );
 };

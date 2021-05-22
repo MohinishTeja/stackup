@@ -7,13 +7,12 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {ThemeProvider} from 'react-native-magnus';
 import Router from './src/config/router';
-import Network from './src/config/network';
 import StartScreen from './src/screens/start';
 import SettingsScreen from './src/screens/settings';
 import ImportHDWalletScreen from './src/screens/importHDWallet';
 import CreateHDWalletScreen from './src/screens/createHDWallet';
 import MainScreen from './src/screens/main';
-import AccountScreen from './src/screens/account';
+import DepositScreen from './src/screens/deposit';
 import {useWalletStorage, useInit} from './src/hooks';
 import {AppTabBar} from './src/components';
 
@@ -36,34 +35,19 @@ const MainTabs = () => {
     <SafeAreaView style={{flex: 1}}>
       <Tab.Navigator lazy tabBar={props => <AppTabBar {...props} />}>
         <Tab.Screen
-          name={Router.ACTIVITY}
-          component={MainScreen}
-          options={{title: 'Activity'}}
-        />
-        <Tab.Screen
           name={Router.ACCOUNT}
-          component={AccountScreen}
+          component={MainScreen}
           options={{title: 'Account'}}
         />
         <Tab.Screen
-          name={Router.PAYMENTS}
-          component={AccountScreen}
-          options={{title: 'Payments'}}
+          name={Router.DEPOSIT}
+          component={DepositScreen}
+          options={{title: 'Deposit'}}
         />
         <Tab.Screen
           name={Router.EARN}
-          component={AccountScreen}
+          component={DepositScreen}
           options={{title: 'Earn'}}
-        />
-        <Tab.Screen
-          name={Router.LOAN}
-          component={AccountScreen}
-          options={{title: 'Loan'}}
-        />
-        <Tab.Screen
-          name={Router.SWAP}
-          component={AccountScreen}
-          options={{title: 'Swap'}}
         />
         <Tab.Screen
           name={Router.SETTINGS}

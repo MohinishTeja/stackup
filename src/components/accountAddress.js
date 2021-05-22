@@ -2,12 +2,7 @@ import React from 'react';
 import {Pressable} from 'react-native';
 import {Div, Text, Skeleton, Icon} from 'react-native-magnus';
 import {useWalletStorage} from '../hooks';
-
-const startAndEnd = str => {
-  if (typeof str !== 'string') return '';
-
-  return str.substr(0, 6) + '....' + str.substr(str.length - 6, str.length);
-};
+import {startAndEnd} from '../utils/addressHelpers';
 
 export const AccountAddress = props => {
   const {wallet, walletLoading} = useWalletStorage(set => ({
@@ -34,9 +29,7 @@ export const AccountAddress = props => {
             <Text fontWeight="bold">
               Address: {startAndEnd(wallet?.address)}
             </Text>
-            <Icon name="copy1" color="black">
-              copy
-            </Icon>
+            <Icon name="copy1" color="black" />
           </Div>
         </Pressable>
       )}

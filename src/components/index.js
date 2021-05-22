@@ -3,5 +3,7 @@ export * from './appButton';
 export * from './accountBalance';
 export * from './accountExplorer';
 export * from './accountAddress';
-export * from './accountDeposit';
+export * from './rampNetworkDeposit';
+export * from './accountAvatar';
+export * from './accountActivity';
 export * from './sectionContainer';
