@@ -15,7 +15,7 @@ export default function StartScreen({navigation}) {
       <Div flex={1} top={height * 0.25} px="xl">
         <Div row alignItems="center" justifyContent="center">
           <Text fontSize="6xl" fontWeight="bold">
-            StackUp
+            Stackup
           </Text>
           <Tag ml="sm" bg="blue500" color="white">
             alpha
