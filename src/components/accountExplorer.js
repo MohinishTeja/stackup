@@ -1,5 +1,6 @@
 import React from 'react';
-import {Pressable, Linking} from 'react-native';
+import {Linking} from 'react-native';
+import {PressableOpacity} from 'react-native-pressable-opacity';
 import {InAppBrowser} from 'react-native-inappbrowser-reborn';
 import {Div, Text, Skeleton, Icon} from 'react-native-magnus';
 import {useWalletStorage} from '../hooks';
@@ -27,7 +28,7 @@ export const AccountExplorer = props => {
       {walletLoading ? (
         <Skeleton.Box h={32} {...props} />
       ) : (
-        <Pressable onPress={onPress}>
+        <PressableOpacity onPress={onPress}>
           <Div
             row
             p="md"
@@ -41,7 +42,7 @@ export const AccountExplorer = props => {
             <Text fontWeight="bold">🔎 Open explorer</Text>
             <Icon name="open-in-new" fontFamily="MaterialIcons" color="black" />
           </Div>
-        </Pressable>
+        </PressableOpacity>
       )}
     </>
   );

@@ -3,6 +3,8 @@ import {useWindowDimensions} from 'react-native';
 import {Div, Text} from 'react-native-magnus';
 import Carousel from 'react-native-snap-carousel';
 
+const FIRST_ITEM_INDEX = 1;
+
 export const AppTabBar = ({state, descriptors, navigation, position}) => {
   const {width: viewportWidth} = useWindowDimensions();
   const wp = percentage => {
@@ -49,6 +51,7 @@ export const AppTabBar = ({state, descriptors, navigation, position}) => {
         sliderWidth={sliderWidth}
         itemWidth={itemWidth}
         onSnapToItem={onSnapToItem}
+        firstItem={FIRST_ITEM_INDEX}
       />
     </Div>
   );

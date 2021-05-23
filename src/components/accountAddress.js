@@ -1,5 +1,5 @@
 import React from 'react';
-import {Pressable} from 'react-native';
+import {PressableOpacity} from 'react-native-pressable-opacity';
 import {Div, Text, Skeleton, Icon} from 'react-native-magnus';
 import {useWalletStorage} from '../hooks';
 import {startAndEnd} from '../utils/formatHelpers';
@@ -15,7 +15,7 @@ export const AccountAddress = props => {
       {walletLoading ? (
         <Skeleton.Box h={32} {...props} />
       ) : (
-        <Pressable onPress={props.onPress}>
+        <PressableOpacity onPress={props.onPress}>
           <Div
             row
             p="md"
@@ -31,7 +31,7 @@ export const AccountAddress = props => {
             </Text>
             <Icon name="copy1" color="black" />
           </Div>
-        </Pressable>
+        </PressableOpacity>
       )}
     </>
   );

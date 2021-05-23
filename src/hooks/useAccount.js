@@ -6,6 +6,11 @@ import dayjs from 'dayjs';
 import {ethers} from '../lib/ethers';
 import App from '../config/app';
 import Network from '../config/network';
+import {LOADING_START, LOADING_END} from '../utils/commonStates';
+import {
+  getErc20AddressMap,
+  getAaveErc20AddressMap,
+} from '../utils/configHelpers';
 
 const ERC20_ABI = [
   // Read-Only Functions
@@ -20,28 +25,24 @@ const ERC20_ABI = [
   'event Transfer(address indexed from, address indexed to, uint amount)',
 ];
 
-const ERC20_ADDRESS_MAP = Object.entries(Network.MATIC.ERC20_TOKENS).reduce(
-  (prev, [key, value]) => {
-    prev[value.ADDRESS.toLowerCase()] = key;
-    return prev;
-  },
-  {},
-);
+const ERC20_ADDRESS_MAP = getErc20AddressMap(Network);
+
+const AAVE_ERC20_ADDRESS_MAP = getAaveErc20AddressMap(Network);
 
 const INIT = {
   provider: new ethers.providers.JsonRpcProvider(Network.MATIC.RPC_URL),
   symbol: Network.MATIC.SYMBOL,
   balance: ethers.BigNumber.from(0),
   erc20Tokens: [],
+  stakedERC20Tokens: [],
   transactions: [],
   pagination: null,
   loading: false,
 };
-const LOADING_START = {loading: true};
-const LOADING_END = {loading: false};
 const setBalanceState = balance => ({balance, ...LOADING_END});
-const setERC20TokenState = erc20Tokens => ({
+const setERC20TokenState = (erc20Tokens, stakedERC20Tokens) => ({
   erc20Tokens: orderBy(uniqBy(erc20Tokens, 'symbol'), 'symbol'),
+  stakedERC20Tokens: orderBy(uniqBy(stakedERC20Tokens, 'symbol'), 'symbol'),
   ...LOADING_END,
 });
 const setTransactionsState = (transactions, pagination) => ({
@@ -79,6 +80,7 @@ export const useAccount = create((set, get) => ({
       );
       const {items} = response.data.data;
 
+      // Supported ERC 20 token
       const ERC20Tokens = items.reduce((prev, curr) => {
         if (curr.contract_address.toLowerCase() in ERC20_ADDRESS_MAP) {
           const tokenKey =
@@ -92,7 +94,22 @@ export const useAccount = create((set, get) => ({
         return prev;
       }, []);
 
-      set(setERC20TokenState(ERC20Tokens));
+      // Supported ERC 20 token being staked
+      const stakedERC20Tokens = items.reduce((prev, curr) => {
+        if (curr.contract_address.toLowerCase() in AAVE_ERC20_ADDRESS_MAP) {
+          const tokenKey =
+            AAVE_ERC20_ADDRESS_MAP[curr.contract_address.toLowerCase()];
+          prev.push({
+            balance: curr.balance,
+            symbol: Network.MATIC.ERC20_TOKENS[tokenKey].SYMBOL,
+            pool: Network.MATIC.PROTOCOLS.AAVE.NAME,
+          });
+        }
+
+        return prev;
+      }, []);
+
+      set(setERC20TokenState(ERC20Tokens, stakedERC20Tokens));
     } catch (error) {
       set(LOADING_END);
       throw error;

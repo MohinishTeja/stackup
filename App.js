@@ -13,6 +13,7 @@ import ImportHDWalletScreen from './src/screens/importHDWallet';
 import CreateHDWalletScreen from './src/screens/createHDWallet';
 import MainScreen from './src/screens/main';
 import DepositScreen from './src/screens/deposit';
+import EarnScreen from './src/screens/earn';
 import {useWalletStorage, useInit} from './src/hooks';
 import {AppTabBar} from './src/components';
 
@@ -33,20 +34,23 @@ const MainTabs = () => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Tab.Navigator lazy tabBar={props => <AppTabBar {...props} />}>
-        <Tab.Screen
-          name={Router.ACCOUNT}
-          component={MainScreen}
-          options={{title: 'Account'}}
-        />
+      <Tab.Navigator
+        lazy
+        initialRouteName={Router.ACCOUNT}
+        tabBar={props => <AppTabBar {...props} />}>
         <Tab.Screen
           name={Router.DEPOSIT}
           component={DepositScreen}
           options={{title: 'Deposit'}}
         />
         <Tab.Screen
+          name={Router.ACCOUNT}
+          component={MainScreen}
+          options={{title: 'Account'}}
+        />
+        <Tab.Screen
           name={Router.EARN}
-          component={DepositScreen}
+          component={EarnScreen}
           options={{title: 'Earn'}}
         />
         <Tab.Screen

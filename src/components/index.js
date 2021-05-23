@@ -7,3 +7,4 @@ export * from './rampNetworkDeposit';
 export * from './accountAvatar';
 export * from './accountActivity';
 export * from './sectionContainer';
+export * from './aaveReserveOverview';

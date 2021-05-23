@@ -2,10 +2,10 @@ import create from 'zustand';
 import * as Keychain from 'react-native-keychain';
 import {ethers} from '../lib/ethers';
 import App from '../config/app';
+import {LOADING_START, LOADING_END} from '../utils/commonStates';
 
-const LOADING_START = {loading: true};
-const RESET = {wallet: null, loading: false};
-const setWalletState = wallet => ({wallet, loading: false});
+const RESET = {wallet: null, ...LOADING_END};
+const setWalletState = wallet => ({wallet, ...LOADING_END});
 const createWalletFromSeed = async seedPhrase => {
   try {
     // Prevent blocking

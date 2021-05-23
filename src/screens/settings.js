@@ -2,7 +2,12 @@ import React, {useState} from 'react';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {Div, Overlay, Input, Icon, Snackbar} from 'react-native-magnus';
 import {useWalletStorage, useAccount} from '../hooks';
-import {SectionContainer, AppButton} from '../components';
+import {
+  SectionContainer,
+  AppButton,
+  AccountAvatar,
+  AccountAddress,
+} from '../components';
 
 export default function SettingsPage({navigation}) {
   const [showSeedPhrase, setShowSeedPhrase] = useState(false);
@@ -26,9 +31,9 @@ export default function SettingsPage({navigation}) {
     }
   };
 
-  const onCopyPress = () => {
-    Clipboard.setString(wallet?.mnemonic?.phrase);
-    this.snackbarRef.show('Seed phrase copied to clipboard', {
+  const onCopyPress = (string, message) => {
+    Clipboard.setString(string);
+    this.snackbarRef.show(message, {
       duration: 2000,
       suffix: (
         <Icon
@@ -44,7 +49,17 @@ export default function SettingsPage({navigation}) {
   return (
     <>
       <Div flex={1} p="xl">
-        <SectionContainer redBorder title="⚠️ Danger zone">
+        <Div rounded="md" bg="white" p="lg">
+          <AccountAvatar mt="sm" />
+          <AccountAddress
+            mt="xl"
+            onPress={() =>
+              onCopyPress(wallet?.address, 'Address copied to clipboard')
+            }
+          />
+        </Div>
+
+        <SectionContainer mt="xl" redBorder title="⚠️ Danger zone">
           <AppButton
             danger
             loading={isLoading}
@@ -77,7 +92,15 @@ export default function SettingsPage({navigation}) {
           fontSize="xl"
           value={wallet?.mnemonic?.phrase}
         />
-        <AppButton outline marginTop onPress={onCopyPress}>
+        <AppButton
+          outline
+          marginTop
+          onPress={() =>
+            onCopyPress(
+              wallet?.mnemonic?.phrase,
+              'Seed phrase copied to clipboard',
+            )
+          }>
           Copy
         </AppButton>
       </Overlay>

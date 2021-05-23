@@ -1,5 +1,6 @@
 import React from 'react';
-import {SectionList, Pressable, Linking} from 'react-native';
+import {SectionList, Linking} from 'react-native';
+import {PressableOpacity} from 'react-native-pressable-opacity';
 import {InAppBrowser} from 'react-native-inappbrowser-reborn';
 import {Div, Text, Skeleton, Tag} from 'react-native-magnus';
 import dayjs from 'dayjs';
@@ -30,7 +31,7 @@ export const AccountActivity = props => {
 
   const renderHeader = ({section: {date}}) => {
     return (
-      <Div p="md" bg="white">
+      <Div px="lg" py="md" bg="white">
         <Text fontSize="lg" fontWeight="500">
           {dayjs(date).format('MMM D, YYYY')}
         </Text>
@@ -40,7 +41,7 @@ export const AccountActivity = props => {
 
   const renderRow = ({item}) => {
     const isOutbound =
-      item.from_address.toLowerCase() === wallet.address.toLowerCase();
+      item.from_address.toLowerCase() === wallet?.address.toLowerCase();
     const direction = isOutbound ? 'To ' : 'From ';
     const address = isOutbound
       ? startAndEnd(item.to_address)
@@ -50,8 +51,8 @@ export const AccountActivity = props => {
     const status = isOutbound ? 'OUT' : 'IN';
 
     return (
-      <Pressable onPress={() => onRowPress(item.tx_hash)}>
-        <Div row px="lg" my="md">
+      <PressableOpacity onPress={() => onRowPress(item.tx_hash)}>
+        <Div row px="lg" py="md">
           <Tag
             fontSize="sm"
             w={52}
@@ -86,7 +87,7 @@ export const AccountActivity = props => {
             </Text>
           </Div>
         </Div>
-      </Pressable>
+      </PressableOpacity>
     );
   };
 

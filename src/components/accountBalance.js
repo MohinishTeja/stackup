@@ -7,7 +7,7 @@ import {ethers} from '../lib/ethers';
 import Network from '../config/network';
 import {numberWithCommas} from '../utils/formatHelpers';
 
-export const AccountBalance = props => {
+export const AccountBalance = ({stakedTokens = false, ...props}) => {
   const {width: viewportWidth} = useWindowDimensions();
   const wp = percentage => {
     const value = (percentage * viewportWidth) / 100;
@@ -23,7 +23,7 @@ export const AccountBalance = props => {
   }));
   const {balance, erc20Tokens, maticLoading} = useAccount(set => ({
     balance: set.balance,
-    erc20Tokens: set.erc20Tokens,
+    erc20Tokens: stakedTokens ? set.stakedERC20Tokens : set.erc20Tokens,
     maticLoading: set.loading,
   }));
 
@@ -34,6 +34,16 @@ export const AccountBalance = props => {
     const units =
       (index === erc20Tokens.length && Network.MATIC.UNITS) ||
       Network.MATIC.ERC20_TOKENS[item.symbol].UNITS;
+
+    const balance = numberWithCommas(
+      ethers.utils.formatUnits(item.balance, units),
+    );
+    let fontSize = '6xl';
+    if (balance.length > 10) fontSize = '3xl';
+    if (balance.length > 20) fontSize = 'xl';
+
+    const showPool = stakedTokens && item.pool;
+
     return (
       <Div
         rounded="md"
@@ -42,9 +52,18 @@ export const AccountBalance = props => {
         alignItems="center"
         justifyContent="center">
         <Image mt="lg" h={logoHeight} w={logoHeight} source={source} />
-        <Div row my="lg" alignItems="baseline" justifyContent="center">
-          <Text fontWeight="bold" fontSize="6xl">
-            {numberWithCommas(ethers.utils.formatUnits(item.balance, units))}
+        {showPool && (
+          <Text mt="sm" color="gray700" fontSize="sm">
+            {item.pool}
+          </Text>
+        )}
+        <Div
+          row
+          my={showPool ? 'md' : 'lg'}
+          alignItems="baseline"
+          justifyContent="center">
+          <Text fontWeight="bold" fontSize={fontSize}>
+            {balance}
           </Text>
           <Text fontWeight="bold" fontSize="lg">
             {' '}
@@ -73,6 +92,7 @@ export const AccountBalance = props => {
         </Div>
       ) : (
         <Carousel
+          useScrollView
           data={[...erc20Tokens, {symbol: Network.MATIC.SYMBOL, balance}]}
           renderItem={renderItem}
           sliderWidth={sliderWidth}

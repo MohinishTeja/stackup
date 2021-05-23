@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@aave/protocol-js": "^2.7.2",
     "@ethersproject/shims": "^5.1.1",
     "@react-native-clipboard/clipboard": "^1.7.0",
     "@react-native-community/masked-view": "^0.1.11",
@@ -34,6 +35,7 @@
     "react-native-keychain": "^7.0.0",
     "react-native-magnus": "^1.0.62",
     "react-native-modal": "^11.10.0",
+    "react-native-pressable-opacity": "^1.0.4",
     "react-native-reanimated": "^2.1.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.1.1",
