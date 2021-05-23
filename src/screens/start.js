@@ -22,7 +22,7 @@ export default function StartScreen({navigation}) {
           </Tag>
         </Div>
         <Text mt="sm" textAlign="center" fontSize="lg" fontWeight="bold">
-          A friendly DeFi app for the Polygon Network
+          A friendly DeFi app for Polygon
         </Text>
         <AppButton
           mt="3xl"
