@@ -28,7 +28,7 @@
 
 ![stackup-screenshot](https://i.imgur.com/prkIWQc.png)
 
-Stackup is trying to build a better user experience for anyone in DeFi. Imagine you wanted to earn a higher interest rate on your cash savings. With DeFi this is actually possible, but it isn't so easy compare to traditional finance.
+Stackup is trying to build a better user experience for anyone in DeFi. Imagine you wanted to earn a higher interest rate on your cash savings. With DeFi this is actually possible, but it isn't so easy compared to traditional finance.
 
 | DeFi                                       | TradFi                                   |
 | ------------------------------------------ | ---------------------------------------- |
@@ -56,7 +56,7 @@ npm run ios
 
 ## Roadmap
 
-_**⚠️ Stackup is still in early development so the roadmap is TBA, but you can follow the [development blog](https://stackup.substack.com/) if you're interested in updates!**_
+**_Stackup is currently in early development so the roadmap is TBA. You could also follow the [development blog](https://stackup.substack.com/) if you're interested in updates!_**
 
 ## Contact
 
