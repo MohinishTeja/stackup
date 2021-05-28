@@ -28,7 +28,7 @@
 
 ![stackup-screenshot](https://i.imgur.com/prkIWQc.png)
 
-Stackup is trying to build a better user experience for anyone in DeFi. Imagine if you wanted to earn a higher interest rate on your cash savings. With DeFi this is actually possible, but it isn't so easy compared to traditional finance.
+Stackup is trying to build a better user experience for anyone in DeFi. Imagine if you wanted to earn a higher interest rate compared to your traditional savings account. With DeFi this is actually possible, but it isn't so easy compared to traditional finance.
 
 | DeFi                                       | TradFi                                   |
 | ------------------------------------------ | ---------------------------------------- |
