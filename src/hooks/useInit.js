@@ -1,4 +1,4 @@
-import {useWalletStorage, useAccount, useAave} from '.';
+import {useWalletStorage, useAccount, useAave, usePrices} from '.';
 
 export const useInit = () => {
   const {wallet} = useWalletStorage(set => ({
@@ -14,6 +14,9 @@ export const useInit = () => {
   const {fetchReserveData} = useAave(set => ({
     fetchReserveData: set.fetchReserveData,
   }));
+  const {fetchSpotPrices} = usePrices(set => ({
+    fetchSpotPrices: set.fetchSpotPrices,
+  }));
 
   const init = async () => {
     return Promise.all([
@@ -21,6 +24,7 @@ export const useInit = () => {
       fetchERC20Balance(wallet),
       fetchTransactions(wallet),
       fetchReserveData(),
+      fetchSpotPrices(),
     ]);
   };
 

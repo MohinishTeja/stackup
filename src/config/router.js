@@ -3,8 +3,10 @@ export default Router = {
   IMPORT_HD_WALLET: 'ImportHDWallet',
   CREATE_HD_WALLET: 'CreateHDWallet',
   MAIN: 'MainScreen',
+  ACTIVITY: 'ActivityScreen',
   ACCOUNT: 'AccountScreen',
-  DEPOSIT: 'DepositScreen',
-  EARN: 'EarnScreen',
+  SAVERS: 'SaversScreen',
   SETTINGS: 'SettingsScreen',
+  COIN_LIST: 'CoinListScreen',
+  YIELDS_LIST: 'YieldsListScreen',
 };

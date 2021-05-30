@@ -14,7 +14,7 @@ const INIT = {
   loading: false,
 };
 const setReserveData = reserveData => ({
-  reserveData: orderBy(reserveData, 'configKey'),
+  reserveData: orderBy(reserveData, 'symbol'),
   ...LOADING_END,
 });
 
@@ -43,7 +43,7 @@ export const useAave = create(set => ({
         setReserveData(
           reserveData
             .filter(data => data.aToken.id in ERC20_ADDRESS_MAP)
-            .map(r => ({configKey: ERC20_ADDRESS_MAP[r.aToken.id], ...r})),
+            .map(r => ({symbol: ERC20_ADDRESS_MAP[r.aToken.id], ...r})),
         ),
       );
     } catch (error) {

@@ -12,8 +12,10 @@ import SettingsScreen from './src/screens/settings';
 import ImportHDWalletScreen from './src/screens/importHDWallet';
 import CreateHDWalletScreen from './src/screens/createHDWallet';
 import MainScreen from './src/screens/main';
-import DepositScreen from './src/screens/deposit';
-import EarnScreen from './src/screens/earn';
+import AccountScreen from './src/screens/account';
+import SaversScreen from './src/screens/savers';
+import CoinListScreen from './src/screens/coinList';
+import YieldsListScreen from './src/screens/yieldsList';
 import {useWalletStorage, useInit} from './src/hooks';
 import {AppTabBar} from './src/components';
 
@@ -36,22 +38,22 @@ const MainTabs = () => {
     <SafeAreaView style={{flex: 1}}>
       <Tab.Navigator
         lazy
-        initialRouteName={Router.ACCOUNT}
+        initialRouteName={Router.ACTIVITY}
         tabBar={props => <AppTabBar {...props} />}>
         <Tab.Screen
-          name={Router.DEPOSIT}
-          component={DepositScreen}
-          options={{title: 'Deposit'}}
-        />
-        <Tab.Screen
           name={Router.ACCOUNT}
-          component={MainScreen}
+          component={AccountScreen}
           options={{title: 'Account'}}
         />
         <Tab.Screen
-          name={Router.EARN}
-          component={EarnScreen}
-          options={{title: 'Earn'}}
+          name={Router.ACTIVITY}
+          component={MainScreen}
+          options={{title: 'Activity'}}
+        />
+        <Tab.Screen
+          name={Router.SAVERS}
+          component={SaversScreen}
+          options={{title: 'Savers'}}
         />
         <Tab.Screen
           name={Router.SETTINGS}
@@ -84,6 +86,16 @@ export default function Main() {
                   name={Router.MAIN}
                   component={MainTabs}
                   options={{headerShown: false, title: 'Home'}}
+                />
+                <Stack.Screen
+                  name={Router.COIN_LIST}
+                  component={CoinListScreen}
+                  options={{headerShown: false, title: 'Coin List'}}
+                />
+                <Stack.Screen
+                  name={Router.YIELDS_LIST}
+                  component={YieldsListScreen}
+                  options={{headerShown: false, title: 'Yields List'}}
                 />
               </>
             ) : (

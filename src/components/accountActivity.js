@@ -5,7 +5,8 @@ import {InAppBrowser} from 'react-native-inappbrowser-reborn';
 import {Div, Text, Skeleton, Tag} from 'react-native-magnus';
 import dayjs from 'dayjs';
 import {useWalletStorage, useAccount} from '../hooks';
-import {startAndEnd, numberWithCommas} from '../utils/formatHelpers';
+import {startAndEnd} from '../utils/formatHelpers';
+import {ethers} from '../lib/ethers';
 
 export const AccountActivity = props => {
   const {walletLoading, wallet} = useWalletStorage(set => ({
@@ -83,7 +84,7 @@ export const AccountActivity = props => {
               color={color}
               ellipsizeMode="tail"
               numberOfLines={1}>
-              {`${sign}${numberWithCommas(item.value)} ${item.symbol}`}
+              {`${sign}${ethers.utils.commify(item.value)} ${item.symbol}`}
             </Text>
           </Div>
         </Div>

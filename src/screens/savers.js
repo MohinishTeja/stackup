@@ -1,17 +1,13 @@
-import React, {useState, useEffect} from 'react';
-import {ScrollView, RefreshControl, LogBox} from 'react-native';
-import {Div} from 'react-native-magnus';
-import {AccountExplorer, AccountActivity, AccountOverview} from '../components';
+import React, {useState} from 'react';
+import {ScrollView, RefreshControl} from 'react-native';
+import {Div, Fab} from 'react-native-magnus';
 import {useInit} from '../hooks';
+import {AccountOverview, SaversOverview} from '../components';
 import Router from '../config/router';
 
-export default function MainScreen({navigation}) {
+export default function SaversScreen({navigation}) {
   const [refreshing, setRefreshing] = useState(false);
   const init = useInit();
-
-  useEffect(() => {
-    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-  }, []);
 
   const onRefresh = async () => {
     try {
@@ -31,17 +27,20 @@ export default function MainScreen({navigation}) {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        <Div px="lg" pt="xl" pb="lg">
+        <Div flex={1} p="xl">
           <AccountOverview
+            savers
             onShowCoin={() =>
-              navigation.navigate(Router.COIN_LIST, {saver: false})
+              navigation.navigate(Router.COIN_LIST, {saver: true})
             }
           />
-
-          <AccountExplorer mt="xl" />
+          <SaversOverview
+            mt="3xl"
+            onShowYields={() => navigation.navigate(Router.YIELDS_LIST)}
+          />
         </Div>
-        <AccountActivity />
       </ScrollView>
+      <Fab p="lg" shadow="xs" fontSize="4xl" onPress={() => {}} />
     </>
   );
 }

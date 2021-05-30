@@ -35,14 +35,16 @@ const INIT = {
   balance: ethers.BigNumber.from(0),
   erc20Tokens: [],
   stakedERC20Tokens: [],
+  savers: [],
   transactions: [],
   pagination: null,
   loading: false,
 };
 const setBalanceState = balance => ({balance, ...LOADING_END});
-const setERC20TokenState = (erc20Tokens, stakedERC20Tokens) => ({
+const setTokenState = (erc20Tokens, stakedERC20Tokens, savers) => ({
   erc20Tokens: orderBy(uniqBy(erc20Tokens, 'symbol'), 'symbol'),
   stakedERC20Tokens: orderBy(uniqBy(stakedERC20Tokens, 'symbol'), 'symbol'),
+  savers,
   ...LOADING_END,
 });
 const setTransactionsState = (transactions, pagination) => ({
@@ -109,7 +111,26 @@ export const useAccount = create((set, get) => ({
         return prev;
       }, []);
 
-      set(setERC20TokenState(ERC20Tokens, stakedERC20Tokens));
+      // TODO: Fetch savers from a local DB using someting like Realm
+      // At the moment this is hardcoded for demo
+      const savers = [
+        {
+          icon: '🏎',
+          name: 'New car',
+          target: 20000,
+          symbol: Network.MATIC.ERC20_TOKENS.DAI.SYMBOL,
+          ratio: 1,
+        },
+        {
+          icon: '✈️',
+          name: 'Holiday',
+          target: 4000,
+          symbol: Network.MATIC.ERC20_TOKENS.USDC.SYMBOL,
+          ratio: 1,
+        },
+      ];
+
+      set(setTokenState(ERC20Tokens, stakedERC20Tokens, savers));
     } catch (error) {
       set(LOADING_END);
       throw error;
